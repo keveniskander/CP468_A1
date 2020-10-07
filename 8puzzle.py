@@ -20,7 +20,6 @@ import random
 # table = [[random.sample(fill,3)] for i in range(3)]
 
 
-
 # This class represents the 8-puzzle
 class Puzzle:
 
@@ -43,4 +42,8 @@ class Puzzle:
 
         print(self.table)
 
-Puzzle(3)   
+    def __eq__(self, table1):
+        if self.table == table1:
+            return True
+        return False
+        
