@@ -31,12 +31,16 @@ class Puzzle:
         return False
 
     fill = '12345678 '
-    def __init__(self, size, table):
+
+    def __init__(self, size):
         self.size = size
         self.table = [[] for i in range(size)]
         for j in range(3):
-            while len(table[j])<3:
+            while len(self.table[j])<3:
                 temp = random.choice(self.fill)
-                if self.checkTable(table, 3, temp) == False:
+                if self.checkTable(self.table, 3, temp) == False:
                     self.table[j].append(temp)
-        
+
+        print(self.table)
+
+Puzzle(3)   
