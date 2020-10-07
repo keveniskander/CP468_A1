@@ -7,6 +7,8 @@ Author:  Keven Iskander
 ID:      160634540
 Email:   iska4540@mylaurier.ca
 __updated__ = "2017-11-07"
+
+This code was written and pulled from CP164 with professor David Brown
 -------------------------------------------------------
 """
 from copy import deepcopy
