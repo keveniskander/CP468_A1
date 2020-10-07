@@ -169,7 +169,6 @@ class PriorityQueue:
             current = current._next
         return pq2, pq3
 
-        return
 
     def __iter__(self):
         """
