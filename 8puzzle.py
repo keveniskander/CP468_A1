@@ -15,11 +15,6 @@ import utilities
 import math
 import random
 
-# Table = [[][][],[][][],[][][]]
-
-# table = [[random.sample(fill,3)] for i in range(3)]
-
-
 # This class represents the 8-puzzle
 class Puzzle:
 
