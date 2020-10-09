@@ -17,6 +17,7 @@ import random
 
 goal8 = [[1, 2, 3],[4, 5, 6],[7, 8, 0]]
 # This class represents the 8-puzzle
+map8 = [[2,2], [0,0], [0,1], [0,2], [1,0], [1,1], [1,2], [2,0], [2,1]]
 
 
 class Puzzle:
@@ -29,13 +30,13 @@ class Puzzle:
         total_distance = 0
 
         if self.table != goal8:
-            for x in range(size):
-                for y in range(size):
+            for x in range(self.size):
+                for y in range(self.size):
                     if self.table[x][y] != goal8[x][y]:
-                        
+                        a = abs(x - map8[self.table[x][y]][0])
+                        b = abs(y - map8[self.table[x][y]][1])
+                        total_distance += a + b
                     
-
-
         return total_distance
 
     def checkTable(self, table, size, key):
