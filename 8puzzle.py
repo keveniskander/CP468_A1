@@ -44,14 +44,14 @@ class Puzzle:
                 return True
         return False
 
-    fill = '12345678 '
+    fill = '012345678'
 
     def __init__(self, size):
         self.size = size
         self.table = [[] for i in range(size)]
         for j in range(size):
             while len(self.table[j])<size:
-                temp = random.choice(self.fill)
+                temp = int(random.choice(self.fill))
                 if self.checkTable(self.table, size, temp) == False:
                     self.table[j].append(temp)
 
@@ -79,7 +79,7 @@ class Puzzle:
 class ChildNode:
 
     puzzleq = utilities.PriorityQueue()
-    fill = '12345678 '
+    fill = '012345678'
 
 
     def checkTable(self, table, size, key):
@@ -94,7 +94,7 @@ class ChildNode:
         # puzzle = Puzzle(size)
         for j in range(size):
             while len(self.table[j])<size:
-                temp = random.choice(self.fill)
+                temp = int(random.choice(self.fill))
                 if self.checkTable(self.table, size, temp) == False:
                     self.table[j].append(temp)
 
