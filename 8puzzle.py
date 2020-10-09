@@ -35,10 +35,17 @@ class Puzzle:
                 if self.checkTable(self.table, 3, temp) == False:
                     self.table[j].append(temp)
 
-        print(self.table)
+        # print(self.table)
 
     def __eq__(self, table1):
         if self.table == table1:
             return True
         return False
+
+    def printPuzzle(self):
+        for i in range(len(self.table)):
+            print(self.table[i])
+
+puzzle = Puzzle(3)
+puzzle.printPuzzle()
         
