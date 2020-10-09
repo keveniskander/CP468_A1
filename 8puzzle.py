@@ -76,7 +76,8 @@ class ChildNode:
         puzzleq.insert(self.table)
 
     def getNext(self, puzzle, size):
-        temp = 9
+        possible_moves = []
+        
         return None
             
 
