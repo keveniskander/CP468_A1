@@ -15,12 +15,15 @@ import utilities
 import math
 import random
 
+goal8 = [['1', '2', '3'],['4', '5', '6'],['7', '8', ' ']]
+
 # This class represents the 8-puzzle
+
+
 class Puzzle:
 
-    goal = [['1', '2', '3'],['4', '5', '6'],['7', '8', ' ']]
-    for x in goal:
-        print(x)
+    # for x in goal:
+    #     print(x)
 
     def checkTable(self, table, size, key):
         for i in range(size):
@@ -50,11 +53,11 @@ class Puzzle:
         for i in range(len(self.table)):
             print(self.table[i])
 
-    def h1(self, size):
+    def h1(self, size, goal):
         count = 0
         for i in range(size):
             for j in range(size):
-                if self.table[i][j] == i:
+                if self.table[i][j] != goal[i][j]:
                     count += 1
         return count
 
@@ -81,3 +84,4 @@ class ChildNode:
 print()
 puzzle = Puzzle(3)
 puzzle.printPuzzle()
+print(puzzle.h1(3, goal8))
