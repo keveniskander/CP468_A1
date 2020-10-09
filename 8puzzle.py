@@ -66,17 +66,46 @@ class Puzzle:
 class ChildNode:
 
     puzzleq = utilities.PriorityQueue()
+    fill = '12345678 '
+
+
+    def checkTable(self, table, size, key):
+        for i in range(size):
+            if key in table[i]:
+                return True
+        return False
 
     def __init__(self, table, size):
         self.size = size
         self.table = [[] for i in range(size)]
         # puzzle = Puzzle(size)
+        for j in range(size):
+            while len(self.table[j])<size:
+                temp = random.choice(self.fill)
+                if self.checkTable(self.table, size, temp) == False:
+                    self.table[j].append(temp)
 
     def storePuzzle(self, puzzleq):
         puzzleq.insert(self.table)
 
-    def getNext(self, puzzle, size):
+    def printPuzzle(self):
+        for i in range(len(self.table)):
+            print(self.table[i])
+
+    def around(self, parent, size):
         possible_moves = []
+        blank_index = [0,0]
+
+        for i in range(size):
+            for j in range(size):
+                if self.table[i][j] == ' ':
+                    blank_index[0] = i
+                    blank_index[1] = j
+                    break
+
+        print(blank_index)
+
+        
         
         return None
             
@@ -84,7 +113,11 @@ def main():
     print()
     puzzle = Puzzle(3)
     puzzle.printPuzzle()
-    print(puzzle.h1(3, goal8))
+    print()
+    # print(puzzle.h1(3, goal8))
+    child = ChildNode(puzzle, 3)
+    child.printPuzzle()
+    print(child.around(puzzle, 3))
 
 if __name__ == "__main__":
     main()
