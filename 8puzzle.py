@@ -115,7 +115,7 @@ def main():
     print()
     # print(puzzle.h1(3, goal8))
     child = ChildNode(puzzle, 3)
-    child.printPuzzle()
+    #child.printPuzzle()
     # print(child.around(puzzle, 3))
     print(puzzle.manhattan())
 
