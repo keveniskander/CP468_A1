@@ -80,44 +80,33 @@ class Puzzle:
 class ChildNode:
 
     puzzleq = utilities.PriorityQueue()
-    fill = '012345678'
 
-
-    def checkTable(self, table, size, key):
-        for i in range(size):
-            if key in table[i]:
-                return True
-        return False
-
-    def __init__(self, table, size):
+    def __init__(self, parent, size):
         self.size = size
-        self.table = [[] for i in range(size)]
-        # puzzle = Puzzle(size)
-        for j in range(size):
-            while len(self.table[j])<size:
-                temp = int(random.choice(self.fill))
-                if self.checkTable(self.table, size, temp) == False:
-                    self.table[j].append(temp)
+        self.parent = parent
+        self.parent_table = parent.table
+        
 
     def storePuzzle(self, puzzleq):
-        puzzleq.insert(self.table)
+        puzzleq.insert(self.parent_table)
 
     def printPuzzle(self):
-        print(self.parent_table)
+        for i in range(self.size):
+            print(self.parent_table[i])
 
-    def around(self, parent, size):
-        possible_moves = []
-        blank_index = [0,0]
+    # def around(self, parent, size):
+    #     possible_moves = []
+    #     blank_index = [0,0]
 
-        for i in range(size):
-            for j in range(size):
-                if self.table[i][j] == ' ':
-                    blank_index[0] = i
-                    blank_index[1] = j
-                    break
-        print(blank_index)
+    #     for i in range(size):
+    #         for j in range(size):
+    #             if self.table[i][j] == ' ':
+    #                 blank_index[0] = i
+    #                 blank_index[1] = j
+    #                 break
+    #     print(blank_index)
 
-        return None
+    #     return None
             
 def main():
     print()
@@ -127,7 +116,7 @@ def main():
     # print(puzzle.h1(3, goal8))
     child = ChildNode(puzzle, 3)
     child.printPuzzle()
-    print(child.around(puzzle, 3))
+    # print(child.around(puzzle, 3))
 
 if __name__ == "__main__":
     main()
