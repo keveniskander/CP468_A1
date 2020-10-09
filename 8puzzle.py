@@ -18,6 +18,10 @@ import random
 # This class represents the 8-puzzle
 class Puzzle:
 
+    goal = [['1', '2', '3'],['4', '5', '6'],['7', '8', ' ']]
+    for x in goal:
+        print(x)
+
     def checkTable(self, table, size, key):
         for i in range(size):
             if key in table[i]:
@@ -75,7 +79,6 @@ class ChildNode:
             
 
 
-
+print()
 puzzle = Puzzle(3)
 puzzle.printPuzzle()
-        
