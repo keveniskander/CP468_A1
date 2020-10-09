@@ -103,8 +103,7 @@ class ChildNode:
         puzzleq.insert(self.table)
 
     def printPuzzle(self):
-        for i in range(len(self.table)):
-            print(self.table[i])
+        print(self.parent_table)
 
     def around(self, parent, size):
         possible_moves = []
