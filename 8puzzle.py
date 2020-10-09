@@ -53,9 +53,10 @@ class Puzzle:
     def h1(self):
         count = 0
         for i in range(size):
-            for j in range(size-1):
-                if self.table[i][j] == i:
-                    count += 1
+            for j in range(size):
+                if i != 2 and j != 2:
+                    if self.table[i][j] == i:
+                        count += 1
         return count
 
 
