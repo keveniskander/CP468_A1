@@ -119,7 +119,8 @@ def main():
     # print(child.around(puzzle, 3))
 
 
-#random
+#TEST
+print()
 
 if __name__ == "__main__":
     main()
