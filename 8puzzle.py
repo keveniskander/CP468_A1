@@ -80,9 +80,11 @@ class ChildNode:
         
         return None
             
+def main():
+    print()
+    puzzle = Puzzle(3)
+    puzzle.printPuzzle()
+    print(puzzle.h1(3, goal8))
 
-
-print()
-puzzle = Puzzle(3)
-puzzle.printPuzzle()
-print(puzzle.h1(3, goal8))
+if __name__ == "__main__":
+    main()
