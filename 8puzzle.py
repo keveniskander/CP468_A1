@@ -50,7 +50,7 @@ class Puzzle:
         for i in range(len(self.table)):
             print(self.table[i])
 
-    def h1(self):
+    def h1(self, size):
         count = 0
         for i in range(size):
             for j in range(size):
@@ -74,8 +74,7 @@ class ChildNode:
 
     def getNext(self, puzzle, size):
         temp = 9
-        nextIndex = []
-        for i in range(size):
+        return None
             
 
 
