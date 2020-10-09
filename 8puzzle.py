@@ -117,6 +117,7 @@ def main():
     child = ChildNode(puzzle, 3)
     child.printPuzzle()
     # print(child.around(puzzle, 3))
+    print(puzzle.manhattan())
 
 
 #TEST
