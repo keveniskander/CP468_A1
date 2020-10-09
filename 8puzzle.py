@@ -26,10 +26,9 @@ class Puzzle:
 
     def manhattan(self):
 
-        if self.table == goal8:
-            return 0
-        
-        else:
+        total_distance = 0
+
+        if self.table != goal8:
             for x in range(size):
                 for y in range(size):
                     if self.table[x][y] != goal8[x][y]:
@@ -37,7 +36,7 @@ class Puzzle:
                     
 
 
-        return
+        return total_distance
 
     def checkTable(self, table, size, key):
         for i in range(size):
