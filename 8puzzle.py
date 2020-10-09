@@ -120,8 +120,6 @@ def main():
     print("Manhattan Distance:", puzzle.manhattan())
 
 
-#TEST
-#print()
 
 if __name__ == "__main__":
     main()
