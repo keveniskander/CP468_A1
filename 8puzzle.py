@@ -46,20 +46,33 @@ class Puzzle:
         for i in range(len(self.table)):
             print(self.table[i])
 
+    def h1(self):
+        count = 0
+        for i in range(size):
+            for j in range(size-1):
+                if self.table[i][j] == i:
+                    count += 1
+        return count
+
+
 
 class ChildNode:
+
+    puzzleq = utilities.PriorityQueue()
 
     def __init__(self, table, size):
         self.size = size
         self.table = [[] for i in range(size)]
         # puzzle = Puzzle(size)
 
+    def storePuzzle(self, puzzleq):
+        puzzleq.insert(self.table)
+
     def getNext(self, puzzle, size):
         temp = 9
+        nextIndex = []
         for i in range(size):
-            for j in range(size):
-                if int(puzzle[i][j]) < temp:
-                    temp = int(puzzle[i][j])
+            
 
 
 
