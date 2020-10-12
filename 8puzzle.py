@@ -143,20 +143,29 @@ class ChildNode:
             [blank_position[0]-1, blank_position[1]], [blank_position[0]+1, blank_position[1]]]
 
         while i< len(possible_values):
-            if 0 <= possible_values[i][0] < 3 and 0 <= possible_values[i][1] < 3:
-                print('accepted')
-            else:
+            if not (0 <= possible_values[i][0] < 3 and 0 <= possible_values[i][1] < 3):
+                
                 possible_values.pop(i)
-                print('popped')
+            
             i+=1
 
+        # now possible_values returns a list of the indices of possible squares that the blank square (or 0) can travel to
+
+        # next we need swap function working to make children puzzles by swapping indices and see which has bes manhattan score
+    
 
 
         return possible_values
 
     def swap(self, x, y, sx, sy):
-        # swaps space (or 0 value) in puzzle for either top, bottom, left or right value
-        tempx = self
+        # swaps space (or 0 value) in puzzle for either top, bottom, left or right value.
+        # top, bottom, left and right values are determined in makeBabies function
+
+        temp = self.parent_table
+        temp[x][y] = self.parent_table[sx][sy]
+        temp[sx][sy] = 0
+        
+        return temp
         
         
 
