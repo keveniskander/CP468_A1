@@ -128,8 +128,11 @@ def main():
     child = ChildNode(puzzle, 3)
     #child.printPuzzle()
     # print(child.around(puzzle, 3))
-    print("Manhattan Distance:", puzzle.manhattan())
-    print("Tile at row:3 col:3 = ", puzzle.tileAt(3, 3))
+    # print("Manhattan Distance:", puzzle.manhattan())
+    # print("Tile at row:3 col:3 = ", puzzle.tileAt(3, 3))
+
+    print('H1: ', puzzle.h1(size=3))
+    print('H2: ', puzzle.manhattan())
 
 
 
