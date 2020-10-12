@@ -135,9 +135,18 @@ class ChildNode:
 
     def makeBabies(self):   
         blank_position = self.findParentBlank()
+        babies = []
         possible_values = [[blank_position[0], blank_position[1]+1], [blank_position[0], blank_position[1]-1],
             [blank_position[0]-1, blank_position[1]], [blank_position[0]+1, blank_position[1]]]
+
+
+
         return possible_values
+
+    def swap(self, x, y, sx, sy):
+        # swaps space (or 0 value) in puzzle for either top, bottom, left or right value
+        temp = self.parent_table
+        temp
         
         
 
