@@ -136,8 +136,19 @@ class ChildNode:
     def makeBabies(self):   
         blank_position = self.findParentBlank()
         babies = []
+        i=0
+
+        # first we figure out what moves we can make from 0 (up, down, left or right)
         possible_values = [[blank_position[0], blank_position[1]+1], [blank_position[0], blank_position[1]-1],
             [blank_position[0]-1, blank_position[1]], [blank_position[0]+1, blank_position[1]]]
+
+        while i< len(possible_values):
+            if 0 <= possible_values[i][0] < 3 and 0 <= possible_values[i][1] < 3:
+                print('accepted')
+            else:
+                possible_values.pop(i)
+                print('popped')
+            i+=1
 
 
 
@@ -145,8 +156,7 @@ class ChildNode:
 
     def swap(self, x, y, sx, sy):
         # swaps space (or 0 value) in puzzle for either top, bottom, left or right value
-        temp = self.parent_table
-        temp
+        tempx = self
         
         
 
