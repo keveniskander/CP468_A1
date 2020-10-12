@@ -68,11 +68,11 @@ class Puzzle:
         return ans
 
 
-    def checkTable(self, table, size, key):
-        for i in range(size):
-            if key in table[i]:
-                return True
-        return False
+    # def checkTable(self, table, size, key):
+    #     for i in range(size):
+    #         if key in table[i]:
+    #             return True
+    #     return False
 
     fill = '012345678'
 
