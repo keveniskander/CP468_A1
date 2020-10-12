@@ -123,6 +123,21 @@ class ChildNode:
         for i in range(self.size):
             print(self.parent_table[i])
 
+    def findParentBlank(self):
+        blank_position = [0,0]
+        for i in range(self.size):
+            for j in range(self.size):
+                if self.parent_table[i][j] == 0:
+                    blank_position = [i,j]
+                    return blank_position
+        return blank_position
+
+
+    def makeBabies(self):
+        blank_position = self.findParentBlank()
+        for i in range(4):
+            print(i)
+
     # def around(self, parent, size):
     #     possible_moves = []
     #     blank_index = [0,0]
