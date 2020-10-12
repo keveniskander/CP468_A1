@@ -39,6 +39,11 @@ class Puzzle:
                     
         return total_distance
 
+    def tileAt(self, row, col):
+        tile = self.table[row-1][col-1]
+        return tile
+
+
     def checkTable(self, table, size, key):
         for i in range(size):
             if key in table[i]:
@@ -118,6 +123,7 @@ def main():
     #child.printPuzzle()
     # print(child.around(puzzle, 3))
     print("Manhattan Distance:", puzzle.manhattan())
+    print("Tile at row:3 col:3 = ", puzzle.tileAt(3, 3))
 
 
 
