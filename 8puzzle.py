@@ -68,11 +68,11 @@ class Puzzle:
         return ans
 
 
-    # def checkTable(self, table, size, key):
-    #     for i in range(size):
-    #         if key in table[i]:
-    #             return True
-    #     return False
+    def checkTable(self, table, key):
+        for i in range(self.size):
+            if key in table[i]:
+                return True
+        return False
 
     fill = '012345678'
 
@@ -82,7 +82,7 @@ class Puzzle:
         for j in range(size):
             while len(self.table[j])<size:
                 temp = int(random.choice(self.fill))
-                if self.checkTable(self.table, size, temp) == False:
+                if self.checkTable(self.table, temp) == False:
                     self.table[j].append(temp)
 
         # print(self.table)
@@ -135,8 +135,9 @@ class ChildNode:
 
     def makeBabies(self):   
         blank_position = self.findParentBlank()
-        possible_values = [[blank_position[0], blank_position[1]-1], [blank_position[0], blank_position[1]+1],
+        possible_values = [[blank_position[0], blank_position[1]+1], [blank_position[0], blank_position[1]-1],
             [blank_position[0]-1, blank_position[1]], [blank_position[0]+1, blank_position[1]]]
+        return possible_values
         
         
 
@@ -166,7 +167,8 @@ def main():
     print("Manhattan Distance:", puzzle.manhattan())
     print("list: ", puzzle.matrixToList())
     print("Is puzzle solvable:", puzzle.isSolvable())
-    child.makeBabies()
+    # up, down, left, right
+    print(child.makeBabies())
 
 
 if __name__ == "__main__":
