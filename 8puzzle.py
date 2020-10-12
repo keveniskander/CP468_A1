@@ -33,9 +33,15 @@ class Puzzle:
             for x in range(self.size):
                 for y in range(self.size):
                     if self.table[x][y] != goal8[x][y]:
+                        print("x:      {}       y:    {}".format(x, y))
+                        print("puzzle: {}       goal: {}".format(self.table[x][y], goal8[x][y]))
                         a = abs(x - map8[self.table[x][y]][0])
                         b = abs(y - map8[self.table[x][y]][1])
+                        print("d1:     {}       d2:   {}".format(a, b))
                         total_distance += a + b
+                        print("----------------")
+                        print("movement needed:      {}".format(a+b))
+                        print()
                     
         return total_distance
 
