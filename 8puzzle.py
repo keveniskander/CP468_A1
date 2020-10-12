@@ -96,10 +96,10 @@ class Puzzle:
         for i in range(len(self.table)):
             print(self.table[i])
 
-    def h1(self, size):
+    def h1(self):
         count = 0
-        for i in range(size):
-            for j in range(size):
+        for i in range(self.size):
+            for j in range(self.size):
                 if self.table[i][j] != goal8[i][j]:
                     count += 1
         return count
@@ -133,10 +133,12 @@ class ChildNode:
         return blank_position
 
 
-    def makeBabies(self):
+    def makeBabies(self):   
         blank_position = self.findParentBlank()
-        for i in range(4):
-            print(i)
+        possible_values = [[blank_position[0], blank_position[1]-1], [blank_position[0], blank_position[1]+1],
+            [blank_position[0]-1, blank_position[1]], [blank_position[0]+1, blank_position[1]]]
+        
+        
 
     # def around(self, parent, size):
     #     possible_moves = []
@@ -164,6 +166,7 @@ def main():
     print("Manhattan Distance:", puzzle.manhattan())
     print("list: ", puzzle.matrixToList())
     print("Is puzzle solvable:", puzzle.isSolvable())
+    child.makeBabies()
 
 
 if __name__ == "__main__":
