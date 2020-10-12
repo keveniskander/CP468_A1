@@ -48,6 +48,24 @@ class Puzzle:
     def tileAt(self, row, col):
         tile = self.table[row-1][col-1]
         return tile
+    
+    def matrixToList(self):
+        new_list = [j for sub in self.table for j in sub]
+        return new_list
+    
+    def isSolvable(self):
+        new_list = self.matrixToList()
+
+        count = 0
+        for i in range(len(new_list) -1):
+            for j in range(i+1, len(new_list)):
+                if(new_list[j] and new_list[i] and new_list[i] > new_list[j]):
+                    count += 1
+        if (count % 2 == 0):
+            ans = True
+        else:
+            ans = False
+        return ans
 
 
     def checkTable(self, table, size, key):
@@ -128,12 +146,9 @@ def main():
     child = ChildNode(puzzle, 3)
     #child.printPuzzle()
     # print(child.around(puzzle, 3))
-    # print("Manhattan Distance:", puzzle.manhattan())
-    # print("Tile at row:3 col:3 = ", puzzle.tileAt(3, 3))
-
-    print('H1: ', puzzle.h1(size=3))
-    print('H2: ', puzzle.manhattan())
-
+    print("Manhattan Distance:", puzzle.manhattan())
+    print("list: ", puzzle.matrixToList())
+    print("Is puzzle solvable:", puzzle.isSolvable())
 
 
 if __name__ == "__main__":
