@@ -1,6 +1,3 @@
-from copy import deepcopy
-
-
 """
 -----------------------------------
 priority_queue_linked.py
@@ -10,10 +7,12 @@ Author: Carla Castaneda
 ID: 170804730
 Email: cast4730@mylaurier.ca
 _updated_= "2018-03-05"
+implementation taken from cp164 by david brown
 ---------------------------------------
 """
 
 import copy
+from copy import deepcopy
 
 class _PQNode:
 
@@ -33,14 +32,17 @@ class _PQNode:
         """
         self._data = deepcopy(table)
         #self.table= deepcopy(table)
+
         self.parent = parent
         self._next = _next
-        self.g= table.h1(3)
-        # self.g=0
 
-        # if self.parent!=None:
+        self.g=0
+        self.h=table.h1(3)
 
-        #     self.g=parent.g + table.h1(3)
+        if self.parent!=None:
+            self.g=self.parent.g +1
+
+            self.f= self.g + self.h
 
         return
     
@@ -102,7 +104,7 @@ class PriorityQueue:
         previous=None
         current=self._front
          
-        while current is not None and current.g < value.g:
+        while current is not None and current.f < value.f:
             previous=current
             current=current._next
         

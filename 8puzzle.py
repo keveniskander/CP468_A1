@@ -50,7 +50,25 @@ class Puzzle:
     def tileAt(self, row, col):
         tile = self.table[row-1][col-1]
         return tile
+    
+    def matrixToList(self):
+        new_list = [j for sub in self.table for j in sub]
+        return new_list
 
+    def isSolvable(self):
+        new_list = self.matrixToList()
+
+        count = 0
+        for i in range(len(new_list) -1):
+            for j in range(i+1, len(new_list)):
+                if(new_list[j] and new_list[i] and new_list[i] > new_list[j]):
+                    count += 1
+        if (count % 2 == 0):
+            ans = True
+        else:
+            ans = False
+        return ans
+    
 
     def checkTable(self, table, size, key):
         for i in range(size):
@@ -180,7 +198,7 @@ class A_Solver:
             count=0
             a=pq.is_empty()
             print(a)
-            while(pq.is_empty()!=True ):
+            while(pq.is_empty()!=True and count <10):
 
                 u=pq.remove()
                 print("is it empty?")
@@ -195,6 +213,13 @@ class A_Solver:
                     print(i)
                 print()
 
+                print("this is in the visited")
+
+                for i in visited:
+                    print(i)
+
+                print("")
+
                 print("----------")
                 
                 #u.printPuzzle()
@@ -208,15 +233,27 @@ class A_Solver:
                     blank_index=u._data.find_blankspot()
                     moves=u._data.possible_moves(blank_index)
                     list_moves=u._data.moves(moves,blank_index)
+
+                    min=Puzzle(list_moves[1],3).table
                     for i in (list_moves):
-                        if ((Puzzle(i,3)).table not in visited  ):
+                        if ((Puzzle(i,3)).table not in visited ):
                             node = _PQNode(Puzzle(i,3),None,u)
+                            
+                                
+
                             print("inserted")
                             print(node._data)
-                            print("value")
+                            print("f(g) value")
+                            print(node.f)
+                            print("g value")
                             print(node.g)
+                            print("h value")
+                            print(node.h)
                             pq.insert(node)
                             visited.append(Puzzle(i,3).table)
+
+
+
                 count+=1
 
             return
@@ -261,13 +298,18 @@ class A_Solver:
             
 def main():
     #print()
-    # this works[[5,2,8],[4,1,7],[0,3,6]]
+    #this works[[5,2,8],[4,1,7],[0,3,6]]
+    #this doesnt work (infinite loop)[[1,5,8],[3,2,0],[4,6,7]]
     #infinite looping [[1,2,5],[4,3,6],[7,8,0]]
     #this works: [[1,2,3],[4,0,6],[7,5,8]]
-    # this works[[1,2,3],[0,4,6],[7,5,8]]
+    # this works: [[1,2,3],[0,4,6],[7,5,8]]
     #this works: [[1,2,5],[4,3,6],[8,7,0]]
-    #infinite looping [[1,5,8],[3,2,0],[4,6,7]]
-    puzzle = Puzzle([[5,2,8],[4,1,7],[0,3,6]],3)
+     #this works: [[1,2,3],[0,4,6],[7,5,8]]
+
+    if( (Puzzle([[1,2,3],[0,4,6],[7,5,8]],3)).isSolvable()):
+        print("this is solvable")
+
+    puzzle = Puzzle([[1,2,3],[0,4,6],[7,5,8]],3)
     puzzle.printPuzzle()
     print()
     '''testing blank spot and possible moves'''
@@ -285,7 +327,7 @@ def main():
     print()
     puzzle.printPuzzle()
     print()
-
+    '''testing A solver'''
     A_Solver(puzzle,list_moves,blank_index)
 
 
