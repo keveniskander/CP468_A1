@@ -1,42 +1,52 @@
-"""
--------------------------------------------------------
-priority_queue_linked.py
-linked version of the Priority Queue ADT.
--------------------------------------------------------
-Author:  Keven Iskander
-ID:      160634540
-Email:   iska4540@mylaurier.ca
-__updated__ = "2017-11-07"
-
-This code was written and pulled from CP164 with professor David Brown
--------------------------------------------------------
-"""
 from copy import deepcopy
 
 
+"""
+-----------------------------------
+priority_queue_linked.py
+[program description]
+----------------------------------
+Author: Carla Castaneda
+ID: 170804730
+Email: cast4730@mylaurier.ca
+_updated_= "2018-03-05"
+---------------------------------------
+"""
+
+import copy
+
 class _PQNode:
 
-    def __init__(self, value, _next):
+    def __init__(self,table,  _next=None,parent=None):
         """
         -------------------------------------------------------
         Initializes a priority queue node.
-        Use: node = _PQNode(value, _next)
+        Use: node = _PQNode(table, _next,parent)
         -------------------------------------------------------
         Preconditions:
-            value - data value for node (?)
+             value - data value for node (?)
             _next - another priority queue node (_PQNode)
         Postconditions:
             Initializes a priority queue node that contains a copy of value
             and a link to the next node in the priority queue.
         -------------------------------------------------------
         """
-        self._data = deepcopy(value)
+        self._data = deepcopy(table)
+        #self.table= deepcopy(table)
+        self.parent = parent
         self._next = _next
-        return
+        self.g= table.h1(3)
+        # self.g=0
 
+        # if self.parent!=None:
+
+        #     self.g=parent.g + table.h1(3)
+
+        return
+    
 
 class PriorityQueue:
-
+    
     def __init__(self):
         """
         -------------------------------------------------------
@@ -55,13 +65,15 @@ class PriorityQueue:
         """
         -------------------------------------------------------
         Determines if the priority queue is empty.
-        Use: b = pq.empty()
+        Use: b = pq.is_empty()
         -------------------------------------------------------
         Postconditions:
             Returns True if priority queue is empty, False otherwise.
         -------------------------------------------------------
         """
-        return self._front is None
+        if self._front is None:
+            return True
+        return False
 
     def __len__(self):
         """
@@ -79,7 +91,7 @@ class PriorityQueue:
         """
         -------------------------------------------------------
         Inserts a copy of value into the priority queue.
-        Use: pq.insert(value)
+        Use: pq.insert(value,_next,parent)
         -------------------------------------------------------
         Preconditions:
             value - a data element (?)
@@ -87,16 +99,27 @@ class PriorityQueue:
             a copy of value is added to the priority queue.
         -------------------------------------------------------
         """
-        node = None
-        if self._count == 0:
-            node = _PQNode(value,None)
-            self._front = node
-            self._count+=1
+        previous=None
+        current=self._front
+         
+        while current is not None and current.g < value.g:
+            previous=current
+            current=current._next
+        
+        if previous is None:
+            temp=self._front
+            self._front=value
+            #self._front= _PQNode(copy.deepcopy(value), temp,parent)
+            self._front._next=temp
         else:
-            node = _PQNode(value,None)
-            self._rear = node
-            self._count+=1
+    
+            #previous._next=_PQNode(copy.deepcopy(value), current,parent)
+            previous._next=value
+            previous._next._next=current
+
             
+        self._count+=1
+        
 
         return
 
@@ -114,10 +137,12 @@ class PriorityQueue:
         """
         assert self._count > 0, "Cannot remove from an empty priority queue"
 
-        value = self._front._data
-        self._front = self._front._next
+        value = self._front
         self._count-=1
-        
+        if self._count == 0:
+            self._front = None
+        else:
+            self._front= self._front._next
 
         return value
 
@@ -135,7 +160,8 @@ class PriorityQueue:
         """
         assert self._count > 0, "Cannot peek at an empty priority queue"
 
-        value = deepcopy(self._front._data)
+        # your code here
+        value=copy.deepcopy(self._front._data)
 
         return value
 
@@ -157,20 +183,80 @@ class PriorityQueue:
             The current priority queue is empty
         -------------------------------------------------------
         """
-        pq2 = PriorityQueue()
-        pq3 = PriorityQueue()
-        current = self._front
+        pq2=PriorityQueue()
+        pq3=PriorityQueue()
+          
+        previous2=None
+        previous3=None 
 
-        while current!=None:
-            if current._data>=key:
-                pq3.insert(current._data)
-                self.remove()
-            elif current._data<key:
-                pq2.insert(current.remove())
-                self.remove()
-            current = current._next
+        while self._front is not None:
+              
+            if self._front._data>key:
+                  
+                if previous2 is None:
+  
+                    pq2._front=self._front
+                    
+                    
+                    previous2=pq2._front
+
+                else:
+                      
+                    previous2._next=self._front
+                    
+                    
+
+                    previous2=previous2._next
+                self._front=self._front._next
+                pq2._count+=1
+                
+
+            elif self._front._data<=key:
+                if previous2 is not None:
+                    previous2._next=None
+                   
+                if previous3 is None:
+                    pq3._front=self._front
+                    
+                      
+                    previous3=pq3._front
+                    
+                          
+                else:
+                    previous3._next=self._front
+                    
+   
+                    previous3=previous3._next
+                pq3._count+=1
+                
+                self._front=self._front._next
+            self._count-=1
+            
+        if previous3 is not None:
+            previous3._next=None
+ 
         return pq2, pq3
 
+    def _move_front(self, rs):
+        """
+        -------------------------------------------------------
+        Moves the front node from the rs PriorityQueue to the front
+        of the current PriorityQueue.
+        Use: self._move_front(rs)
+        -------------------------------------------------------
+        Preconditions:
+            rs - a linked PriorityQueue (PriorityQueue)
+        Postconditions:
+            The current PriorityQueue contains the old front of the rs PriorityQueue and
+            its count is updated. The rs PriorityQueue front and count are updated.
+        -------------------------------------------------------
+        """
+        assert rs._front is not None, \
+            "Cannot move the front of an empty List"
+
+        # your code here
+
+        return
 
     def __iter__(self):
         """
@@ -190,3 +276,24 @@ class PriorityQueue:
         while current is not None:
             yield current._data
             current = current._next
+
+    def _move_front(self, rs):
+        """
+        -------------------------------------------------------
+        Moves the front node from the rs PriorityQueue to the front
+        of the current PriorityQueue.
+        Use: self._move_front(rs)
+        -------------------------------------------------------
+        Preconditions:
+            rs - a linked PriorityQueue (PriorityQueue)
+        Postconditions:
+            The current PriorityQueue contains the old front of the rs PriorityQueue and
+            its count is updated. The rs PriorityQueue front and count are updated.
+        -------------------------------------------------------
+        """
+        assert rs._front is not None, \
+            "Cannot move the front of an empty List"
+
+        # your code here
+
+        return
