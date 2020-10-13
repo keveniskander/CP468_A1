@@ -14,6 +14,7 @@ __updated__ = "2020-10-06"
 import utilities
 import math
 import random
+from copy import deepcopy
 
 goal8 = [[1, 2, 3],[4, 5, 6],[7, 8, 0]]
 # This class represents the 8-puzzle
@@ -144,7 +145,6 @@ class ChildNode:
 
         while i< len(possible_values):
             if not (0 <= possible_values[i][0] < 3 and 0 <= possible_values[i][1] < 3):
-                
                 possible_values.pop(i)
             
             i+=1
@@ -153,7 +153,12 @@ class ChildNode:
 
         # next we need swap function working to make children puzzles by swapping indices and see which has bes manhattan score
     
-
+        self.printPuzzle()
+        copy = deepcopy(self)
+        print()
+        new = copy.swap(blank_position[0], blank_position[1], possible_values[0][0], possible_values[0][1])
+        print(new)
+        
 
         return possible_values
 
