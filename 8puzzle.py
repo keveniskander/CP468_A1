@@ -266,7 +266,8 @@ def main():
     #this works: [[1,2,3],[4,0,6],[7,5,8]]
     # this works[[1,2,3],[0,4,6],[7,5,8]]
     #this works: [[1,2,5],[4,3,6],[8,7,0]]
-    puzzle = Puzzle([[1,2,5],[4,3,6],[8,7,0]],3)
+    #infinite looping [[1,5,8],[3,2,0],[4,6,7]]
+    puzzle = Puzzle([[5,2,8],[4,1,7],[0,3,6]],3)
     puzzle.printPuzzle()
     print()
     '''testing blank spot and possible moves'''
