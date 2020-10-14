@@ -38,7 +38,7 @@ class _PQNode:
 
         self.g=0
         self.f=0
-        self.h=table.h1(3)
+        self.h=table.manhattan()
 
         if self.parent!=None:
             self.g=self.parent.g +1

@@ -43,7 +43,7 @@ class Puzzle:
                         total_distance += a + b
                         #print("----------------")
                        # print("movement needed:      {}".format(a+b))
-                        print()
+                        # print()
                     
         return total_distance
 
