@@ -14,7 +14,7 @@ __updated__ = "2020-10-06"
 import math
 import random
 from copy import deepcopy
-from utilities import PriorityQueue, _PQNode
+from utilities import _PQNode, PriorityQueue
 
 goal8 = [[1, 2, 3],[4, 5, 6],[7, 8, 0]]
 # This class represents the 8-puzzle
@@ -35,14 +35,14 @@ class Puzzle:
             for x in range(self.size):
                 for y in range(self.size):
                     if self.table[x][y] != goal8[x][y]:
-                        print("x:      {}       y:    {}".format(x, y))
-                        print("puzzle: {}       goal: {}".format(self.table[x][y], goal8[x][y]))
+                        #print("x:      {}       y:    {}".format(x, y))
+                        #print("puzzle: {}       goal: {}".format(self.table[x][y], goal8[x][y]))
                         a = abs(x - map8[self.table[x][y]][0])
                         b = abs(y - map8[self.table[x][y]][1])
-                        print("d1:     {}       d2:   {}".format(a, b))
+                        #print("d1:     {}       d2:   {}".format(a, b))
                         total_distance += a + b
-                        print("----------------")
-                        print("movement needed:      {}".format(a+b))
+                        #print("----------------")
+                       # print("movement needed:      {}".format(a+b))
                         print()
                     
         return total_distance
@@ -116,7 +116,7 @@ class Puzzle:
             for j in range(size):
                 #print("this is self table",self.table)
                 #print("this is goal8",goal8)
-                if self.table[i][j] != goal8[i][j]:
+                if self.table[i][j] != goal8[i][j] and self.table[i][j]!=0:
                     count += 1
         return count
 
@@ -179,84 +179,202 @@ class A_Solver:
         def __init__(self,root,moves,blank_index):
 
             pq=PriorityQueue()
+            #cq=PriorityQueue()
             node = _PQNode(Puzzle(root,3))
             pq.insert(node)
             # print("is_empty, ",pq.is_empty())
             # v=pq.peek()
             # v.printPuzzle()
             visited=[]
-            visited.append(Puzzle(root,3).table)
-            print("iterate through")
+            #visited.append(Puzzle(root,3).table)
+           # print("iterate through")
 
-            for i in pq:
-                print(i)
-            print("removed")
+            # for i in pq:
+            #     print(i._data)
+            #print("removed")
             # u=pq.remove()
             # print(u._data)
 
             #u.printPuzzle()
             count=0
-            a=pq.is_empty()
-            print(a)
-            while(pq.is_empty()!=True and count <10):
+            # a=pq.is_empty()
+            # print(a)
+            while(pq.is_empty()!=True ):
 
                 u=pq.remove()
-                print("is it empty?")
-                a=pq.is_empty()
-                print(a)
-                print("this was removed")
-                print(u._data)
-                print("value")
-                print(u.g)
-                print("everthing in the queue currently")
-                for i in pq:
-                    print(i)
-                print()
+                visited.append(u._data)
 
-                print("this is in the visited")
+               
+                # print("this was removed")
+                # print(u._data)
+                # print(" f value")
+                # print(u.f)
+                # print("everthing in the queue currently")
+                # for i in pq:
+                #     print(i._data)
+                # print()
 
-                for i in visited:
-                    print(i)
+                # print("this is in the visited")
 
-                print("")
+                # for i in visited:
+                #     print(i)
 
-                print("----------")
+                # print("")
+
+                # print("----------")
                 
                 #u.printPuzzle()
                 
-                print("F(g) value")
+                # print("F(g) value")
                 #print(u._data.h1(3))
                 if u._data==Puzzle(goal8,3):
                     print(u._data,"is the goal")
                     break
+
                 else:
+
+
                     blank_index=u._data.find_blankspot()
                     moves=u._data.possible_moves(blank_index)
                     list_moves=u._data.moves(moves,blank_index)
 
-                    min=Puzzle(list_moves[1],3).table
-                    for i in (list_moves):
-                        if ((Puzzle(i,3)).table not in visited ):
-                            node = _PQNode(Puzzle(i,3),None,u)
-                            
-                                
+                    #min=Puzzle(list_moves[1],3).table
+                
 
-                            print("inserted")
-                            print(node._data)
-                            print("f(g) value")
-                            print(node.f)
-                            print("g value")
-                            print(node.g)
-                            print("h value")
-                            print(node.h)
-                            pq.insert(node)
-                            visited.append(Puzzle(i,3).table)
+                    for i in (list_moves):
+                        node = _PQNode(Puzzle(i,3),None,u)
+                        # lower_f=0
+                        # pq_node=None
+
+                        # for c in pq:
+                        #     if node==c:
+                        #         lower_f= c.f
+                        #         pq_node=c
+                        if node._data in visited:
+                            #print('skiped')
+                            continue
+                        new=u.g+1
+                        if (node not in pq or new<node.g):
+                            # print("hello MADE IT HERE")
+                            node.parent=u
+                            # print("node.oldg:", node.g)
+                            node.g=new
+                            # print("node.parent:", node.parent._data)
+                            # print("node.newg:", node.g)
+
+                     
+
+                            
+
+
+
+                            if node not in pq:
+                                #print("SOMETHING HAS BEEN DELETED")
+                                #pq.remove(pq_node)
+                                # print("inserted")
+                                # print(node._data)
+                                # print("f(g) value")
+                                # print(node.f)
+                                # print("g value")
+                                # print(node.g)
+                                # print("h value")
+                                # print(node.h)
+                                pq.insert(node)
+
+            
 
 
 
                 count+=1
 
             return
+
+        
+        # class A_Solver:
+        #     def __init__(self,root,moves,blank_index):
+
+        #     pq=PriorityQueue()
+        #     node = _PQNode(Puzzle(root,3))
+        #     pq.insert(node)
+        #     # print("is_empty, ",pq.is_empty())
+        #     # v=pq.peek()
+        #     # v.printPuzzle()
+        #     visited=[]
+        #     visited.append(Puzzle(root,3).table)
+        #     print("iterate through")
+
+        #     for i in pq:
+        #         print(i)
+        #     print("removed")
+        #     # u=pq.remove()
+        #     # print(u._data)
+
+        #     #u.printPuzzle()
+        #     count=0
+        #     a=pq.is_empty()
+        #     print(a)
+        #     while(pq.is_empty()!=True ):
+
+        #         u=pq.remove()
+        #         print("is it empty?")
+        #         a=pq.is_empty()
+        #         print(a)
+        #         print("this was removed")
+        #         print(u._data)
+        #         print("value")
+        #         print(u.g)
+        #         print("everthing in the queue currently")
+        #         for i in pq:
+        #             print(i)
+        #         print()
+
+        #         print("this is in the visited")
+
+        #         for i in visited:
+        #             print(i)
+
+        #         print("")
+
+        #         print("----------")
+                
+        #         #u.printPuzzle()
+                
+        #         print("F(g) value")
+        #         #print(u._data.h1(3))
+        #         if u._data==Puzzle(goal8,3):
+        #             print(u._data,"is the goal")
+        #             break
+        #         else:
+
+        #             blank_index=u._data.find_blankspot()
+        #             moves=u._data.possible_moves(blank_index)
+        #             list_moves=u._data.moves(moves,blank_index)
+
+        #             #min=Puzzle(list_moves[1],3).table
+        #             for i in (list_moves):
+                        
+        #                 if ((Puzzle(i,3)).table not in visited ):
+        #                     node = _PQNode(Puzzle(i,3),None,u)
+                            
+
+
+        #                     print("inserted")
+        #                     print(node._data)
+        #                     print("f(g) value")
+        #                     print(node.f)
+        #                     print("g value")
+        #                     print(node.g)
+        #                     print("h value")
+        #                     print(node.h)
+        #                     pq.insert(node)
+                            
+        #             visited.append(u._data.table)
+
+
+
+        #         count+=1
+
+        #     return
 
 
 
@@ -300,16 +418,16 @@ def main():
     #print()
     #this works[[5,2,8],[4,1,7],[0,3,6]]
     #this doesnt work (infinite loop)[[1,5,8],[3,2,0],[4,6,7]]
-    #infinite looping [[1,2,5],[4,3,6],[7,8,0]]
+    #infinite looping [[1,2,5],[4,3,6],[8,7,0]]
     #this works: [[1,2,3],[4,0,6],[7,5,8]]
     # this works: [[1,2,3],[0,4,6],[7,5,8]]
     #this works: [[1,2,5],[4,3,6],[8,7,0]]
      #this works: [[1,2,3],[0,4,6],[7,5,8]]
 
-    if( (Puzzle([[1,2,3],[0,4,6],[7,5,8]],3)).isSolvable()):
-        print("this is solvable")
+    # if( (Puzzle([[5,2,8],[4,1,7],[0,3,6]],3).isSolvable()):
+    #     print("this is solvable")
 
-    puzzle = Puzzle([[1,2,3],[0,4,6],[7,5,8]],3)
+    puzzle = Puzzle([[7,2,4],[5,0,6],[8,3,1]],3)
     puzzle.printPuzzle()
     print()
     '''testing blank spot and possible moves'''

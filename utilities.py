@@ -37,6 +37,7 @@ class _PQNode:
         self._next = _next
 
         self.g=0
+        self.f=0
         self.h=table.h1(3)
 
         if self.parent!=None:
@@ -125,7 +126,7 @@ class PriorityQueue:
 
         return
 
-    def remove(self):
+    def remove(self,node=None):
         """
         -------------------------------------------------------
         Removes and returns value from the priority queue.
@@ -138,13 +139,35 @@ class PriorityQueue:
         -------------------------------------------------------
         """
         assert self._count > 0, "Cannot remove from an empty priority queue"
-
-        value = self._front
-        self._count-=1
-        if self._count == 0:
-            self._front = None
+        if node==None:
+            value = self._front
+            self._count-=1
+            if self._count == 0:
+                self._front = None
+            else:
+                self._front= self._front._next
         else:
-            self._front= self._front._next
+
+            previous=None
+            current=self._front
+            
+            while current is not None and current._data!=node._data:
+                previous=current
+                current=current._next
+
+            if previous is None:
+                #temp=self._front
+                self._front=current._next
+                #self._front= _PQNode(copy.deepcopy(value), temp,parent)
+                #self._front._next=temp
+            else:
+    
+                #previous._next=_PQNode(copy.deepcopy(value), current,parent)
+                previous._next=current._next
+                #previous._next._next=current
+
+
+
 
         return value
 
@@ -276,7 +299,7 @@ class PriorityQueue:
         current = self._front
 
         while current is not None:
-            yield current._data
+            yield current
             current = current._next
 
     def _move_front(self, rs):
