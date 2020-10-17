@@ -1,7 +1,7 @@
 """
 -------------------------------------------------------
-8puzzle.py
-A* algorithm for the 8-puzzle, with heuristics h1 and h2, as
+15puzzle.py
+A* algorithm for the 15-puzzle, with heuristics h1 and h2, as
 seen in class.
 -------------------------------------------------------
 CP468
@@ -16,9 +16,9 @@ import random
 from copy import deepcopy
 from utilities import _PQNode, PriorityQueue
 
-goal15 = [[1, 2, 3],[4, 5, 6],[7, 8, 0]]
+goal15 = [[1, 2, 3, 4],[5, 6, 7, 8],[9, 10, 11, 12],[13, 14, 15, 0]]
 # This class represents the 8-puzzle
-map15 = [[2,2], [0,0], [0,1], [0,2], [1,0], [1,1], [1,2], [2,0], [2,1]]
+map15 = [[3,3], [0,0], [0,1], [0,2], [0,3], [1,0], [1,1], [1,2], [1,3], [2,0], [2,1], [2,2], [2,3], [3,0], [3,1], [3,2], [3,3]]
 
 class Puzzle:
 
@@ -63,7 +63,7 @@ class Puzzle:
             for j in range(i+1, len(new_list)):
                 if(new_list[j] and new_list[i] and new_list[i] > new_list[j]):
                     count += 1
-        if (count % 2 == 0):
+        if (count % 2 != 0):
             ans = True
         else:
             ans = False
@@ -180,7 +180,7 @@ class A_Solver:
 
             pq=PriorityQueue()
             #cq=PriorityQueue()
-            node = _PQNode(Puzzle(root,3))
+            node = _PQNode(Puzzle(root,4))
             pq.insert(node)
             # print("is_empty, ",pq.is_empty())
             # v=pq.peek()
@@ -199,7 +199,7 @@ class A_Solver:
             count=0
             # a=pq.is_empty()
             # print(a)
-            while(pq.is_empty()!=True ):
+            while(pq.is_empty()!=True and count<100):
 
                 u=pq.remove()
                 visited.append(u._data)
@@ -210,9 +210,9 @@ class A_Solver:
                 # print(" f value")
                 # print(u.f)
                 # print("everthing in the queue currently")
-                # for i in pq:
-                #     print(i._data)
-                # print()
+                for i in pq:
+                    print(i._data)
+                print()
 
                 # print("this is in the visited")
 
@@ -223,11 +223,11 @@ class A_Solver:
 
                 # print("----------")
                 
-                #u.printPuzzle()
+                # u.printPuzzle()
                 
                 # print("F(g) value")
-                #print(u._data.h1(3))
-                if u._data==Puzzle(goal15,3):
+                # print(u._data.h1(3))
+                if u._data==Puzzle(goal15,4):
                     print(u._data,"is the goal")
                     break
 
@@ -242,7 +242,7 @@ class A_Solver:
                 
 
                     for i in (list_moves):
-                        node = _PQNode(Puzzle(i,3),None,u)
+                        node = _PQNode(Puzzle(i,4),None,u)
                         # lower_f=0
                         # pq_node=None
 
@@ -427,7 +427,7 @@ def main():
     # if( (Puzzle([[5,2,8],[4,1,7],[0,3,6]],3).isSolvable()):
     #     print("this is solvable")
 
-    puzzle = Puzzle([[7,2,4],[5,0,6],[8,3,1]],3)
+    puzzle = Puzzle([[2,1,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,0]],4)
     puzzle.printPuzzle()
     print()
     '''testing blank spot and possible moves'''
