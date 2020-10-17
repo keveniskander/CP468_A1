@@ -55,15 +55,30 @@ class Puzzle:
         new_list = [j for sub in self.table for j in sub]
         return new_list
 
+    def findEmpty(self):
+        new_list = self.matrixToList()
+        count = 0
+        rcount = 4
+        for i in range(len(new_list)):
+            if count == 4:
+                count = 0
+                rcount -= 1
+            if new_list[i] == 0:
+                row = rcount
+            count += 1
+        return row
+
     def isSolvable(self):
         new_list = self.matrixToList()
-
+        row = self.findEmpty()
         count = 0
         for i in range(len(new_list) -1):
             for j in range(i+1, len(new_list)):
-                if(new_list[j] and new_list[i] and new_list[i] > new_list[j]):
+                if(new_list[j] > 0 and new_list[j] and new_list[i] and new_list[i] > new_list[j]):
                     count += 1
-        if (count % 2 != 0):
+        if (row % 2 == 0 and count % 2 != 0):
+            ans = True
+        elif (row % 2 != 0 and count % 2 == 0):
             ans = True
         else:
             ans = False
@@ -427,7 +442,10 @@ def main():
     # if( (Puzzle([[5,2,8],[4,1,7],[0,3,6]],3).isSolvable()):
     #     print("this is solvable")
 
-    puzzle = Puzzle([[13,2,10,3],[1,12,8,4],[5,0,9,6],[15,14,11,7]],4)
+    
+
+    puzzle = Puzzle([[3,9,1,15],[14,11,4,6],[13,0,10,12],[2,7,8,5]],4)
+    print(puzzle.isSolvable())
     puzzle.printPuzzle()
     print()
     '''testing blank spot and possible moves'''
