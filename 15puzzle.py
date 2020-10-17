@@ -18,7 +18,7 @@ from utilities import _PQNode, PriorityQueue
 
 goal15 = [[1, 2, 3, 4],[5, 6, 7, 8],[9, 10, 11, 12],[13, 14, 15, 0]]
 # This class represents the 8-puzzle
-map15 = [[3,3], [0,0], [0,1], [0,2], [0,3], [1,0], [1,1], [1,2], [1,3], [2,0], [2,1], [2,2], [2,3], [3,0], [3,1], [3,2], [3,3]]
+map15 = [[3,3], [0,0], [0,1], [0,2], [0,3], [1,0], [1,1], [1,2], [1,3], [2,0], [2,1], [2,2], [2,3], [3,0], [3,1], [3,2]]
 
 class Puzzle:
 
@@ -199,7 +199,7 @@ class A_Solver:
             count=0
             # a=pq.is_empty()
             # print(a)
-            while(pq.is_empty()!=True and count<100):
+            while(pq.is_empty()!=True):
 
                 u=pq.remove()
                 visited.append(u._data)
@@ -210,9 +210,9 @@ class A_Solver:
                 # print(" f value")
                 # print(u.f)
                 # print("everthing in the queue currently")
-                for i in pq:
-                    print(i._data)
-                print()
+                # for i in pq:
+                #     print(i._data)
+                # print()
 
                 # print("this is in the visited")
 
@@ -427,7 +427,7 @@ def main():
     # if( (Puzzle([[5,2,8],[4,1,7],[0,3,6]],3).isSolvable()):
     #     print("this is solvable")
 
-    puzzle = Puzzle([[2,1,3,4],[5,6,7,8],[9,10,11,12],[13,14,15,0]],4)
+    puzzle = Puzzle([[13,2,10,3],[1,12,8,4],[5,0,9,6],[15,14,11,7]],4)
     puzzle.printPuzzle()
     print()
     '''testing blank spot and possible moves'''

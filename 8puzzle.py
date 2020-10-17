@@ -427,7 +427,7 @@ def main():
     # if( (Puzzle([[5,2,8],[4,1,7],[0,3,6]],3).isSolvable()):
     #     print("this is solvable")
 
-    puzzle = Puzzle([[7,2,4],[5,0,6],[8,3,1]],3)
+    puzzle = Puzzle([[7,5,8],[1,4,6],[3,0,2]],3)
     puzzle.printPuzzle()
     print()
     '''testing blank spot and possible moves'''
