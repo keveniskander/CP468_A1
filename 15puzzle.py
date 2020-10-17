@@ -301,6 +301,7 @@ class A_Solver:
 
 
                 count+=1
+                # print(count)
 
             return
 
@@ -444,7 +445,7 @@ def main():
 
     
 
-    puzzle = Puzzle([[3,9,1,15],[14,11,4,6],[13,0,10,12],[2,7,8,5]],4)
+    puzzle = Puzzle([[13,2,10,3],[1,12,8,4],[5,0,9,6],[15,14,11,7]],4)
     print(puzzle.isSolvable())
     puzzle.printPuzzle()
     print()
