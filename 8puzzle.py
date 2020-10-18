@@ -102,7 +102,7 @@ class Puzzle:
     def matrixToList(self):
         # converts 2d matrix to 1d list
         new_list = [j for sub in self.table for j in sub]
-        return 
+        return new_list
         
     """
     -------------------------------------------------------
