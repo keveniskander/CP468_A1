@@ -187,6 +187,20 @@ class Puzzle:
                         current_table=deepcopy(self.table)
 
         return list_moves
+    
+    def h3 (self):
+        inversions=0
+
+        new_list = self.matrixToList()
+        #row = self.findEmpty()
+
+        for i in range(len(new_list) -1):
+            for j in range(i+1, len(new_list)):
+                if(new_list[j] > 0 and new_list[j] and new_list[i] and new_list[i] > new_list[j]):
+                    inversions += 1
+
+
+        return inversions
 
 
 
@@ -232,7 +246,7 @@ class A_Solver:
                 # print("this is in the visited")
 
                 # for i in visited:
-                #     print(i)
+                    # print(i)
 
                 # print("")
 

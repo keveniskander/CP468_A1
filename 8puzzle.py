@@ -1,13 +1,13 @@
 """
 -------------------------------------------------------
 8puzzle.py
-A* algorithm for the 8-puzzle, with heuristics h1 and h2, as
-seen in class.
+A* algorithm for the 8-puzzle, with heuristics h1, h2
+and h3, as seen in class.
 -------------------------------------------------------
 CP468
 Assignment 1
 Authors:  Keven Iskander, Carla Castaneda, Nicole Laslavic, Alexander Francis
-__updated__ = "2020-10-06"
+__updated__ = "2020-10-19"
 -------------------------------------------------------
 """
 
@@ -16,46 +16,106 @@ import random
 from copy import deepcopy
 from utilities import _PQNode, PriorityQueue
 
-goal15 = [[1, 2, 3],[4, 5, 6],[7, 8, 0]]
-# This class represents the 8-puzzle
-map15 = [[2,2], [0,0], [0,1], [0,2], [1,0], [1,1], [1,2], [2,0], [2,1]]
+# Global variables representing goal for 8-puzzle and mapping of indexes for the goal state
+goal8 = [[1, 2, 3],[4, 5, 6],[7, 8, 0]]
+map8 = [[2,2], [0,0], [0,1], [0,2], [1,0], [1,1], [1,2], [2,0], [2,1]]
+
+
+"""
+-------------------------------------------------------
+Initializes Puzzle class
+Use: puzzle = Puzzle(table, size)
+-------------------------------------------------------
+Preconditions:
+        table - 8-puzzle table as a 2d array
+        if table = None, random 8-puzzle generated
+        size - int
+Postconditions:
+    Initializes a Puzzle class that contains a 3x3
+    8-puzzle
+-------------------------------------------------------
+"""
+
 
 class Puzzle:
 
-    # for x in goal:
-    #     print(x)
+    # returns specific item 
     def __getitem__(self, item):
         return self.table[item]
 
+    """
+    -------------------------------------------------------
+    Calculates heuristic 2 for 8-puzzle (aka manhattan)
+    Use: Puzzle.manhattan()
+    -------------------------------------------------------
+    Postconditions:
+        Returns total_distance traveled by nodes
+    -------------------------------------------------------
+    """
     def manhattan(self):
 
         total_distance = 0
 
-        if self.table != goal15:
+        if self.table != goal8:
             for x in range(self.size):
                 for y in range(self.size):
-                    if self.table[x][y] != goal15[x][y]:
-                        #print("x:      {}       y:    {}".format(x, y))
-                        #print("puzzle: {}       goal: {}".format(self.table[x][y], goal15[x][y]))
-                        a = abs(x - map15[self.table[x][y]][0])
-                        b = abs(y - map15[self.table[x][y]][1])
-                        #print("d1:     {}       d2:   {}".format(a, b))
+                    if self.table[x][y] != goal8[x][y]:
+
+                        a = abs(x - map8[self.table[x][y]][0])
+                        b = abs(y - map8[self.table[x][y]][1])
+
+
                         total_distance += a + b
-                        #print("----------------")
-                       # print("movement needed:      {}".format(a+b))
-                        # print()
+
                     
         return total_distance
 
+    """
+    -------------------------------------------------------
+    Determines tile value at index [x,y]
+    Use: Puzzle.tileAt(row, col)
+    -------------------------------------------------------
+    Preconditions:
+            Puzzle object
+            int(row)
+            int(col)
+    Postconditions:
+        Returns tile at position in specified 8-puzzle
+    -------------------------------------------------------
+    """
+
     def tileAt(self, row, col):
+        # return index of blank tile 
         tile = self.table[row-1][col-1]
         return tile
+
+    """
+    -------------------------------------------------------
+    Converts 2d matrix to 1d list
+    Use: Puzzle.matrixToList
+    -------------------------------------------------------
+    Postconditions:
+        Returns flat 1 dimensional list
+    -------------------------------------------------------
+    """
     
     def matrixToList(self):
+        # converts 2d matrix to 1d list
         new_list = [j for sub in self.table for j in sub]
-        return new_list
+        return 
+        
+    """
+    -------------------------------------------------------
+    Determines if 8-puzzle is solvable
+    Use: Puzzle.isSolvable
+    -------------------------------------------------------
+    Postconditions:
+        Returns True if solvable, False otherwise
+    -------------------------------------------------------
+    """
 
     def isSolvable(self):
+        # check if generated 8-puzzle is solvable
         new_list = self.matrixToList()
 
         count = 0
@@ -63,25 +123,62 @@ class Puzzle:
             for j in range(i+1, len(new_list)):
                 if(new_list[j] and new_list[i] and new_list[i] > new_list[j]):
                     count += 1
+
+        # if number of inversions is even, 8-puzzle is solvable
         if (count % 2 == 0):
             ans = True
         else:
             ans = False
         return ans
-    
 
+    """
+    -------------------------------------------------------
+    Checks puzzle elements to determine if specific element
+    is already in puzzle
+    Use: Puzzle.checkTable(table, size, key)
+    -------------------------------------------------------
+    Preconditions:
+            table - list (2D)
+            size - int
+            key - int
+    Postconditions:
+        Returns True if element found, False otherwise
+    -------------------------------------------------------
+    """
+    
     def checkTable(self, table, size, key):
+        # checks puzzle elements to determine if specific element is already in puzzle
+        # used to generate random puzzle and ensures no two elements repeat
         for i in range(size):
             if key in table[i]:
                 return True
         return False
 
+    # global variable fill, used to fill puzzle with random values in string
+
     fill = '012345678'
 
+    """
+    -------------------------------------------------------
+    Initializes Puzzle object
+    Use: puzzle = Puzzle(table=None, size)
+    -------------------------------------------------------
+    Preconditions:
+            table - list (2D)
+            size - int
+    Postconditions:
+        Initialized puzzle object
+    -------------------------------------------------------
+    """
+
     def __init__(self,table, size):
+
+        # puzzle is initialized based on size and if table is given
         self.size = size
+        # size = 3 for 8-puzzle and 4 for 15-puzzle
 
         if (table is None):
+            # if no table is given as parameter, generate random 8-puzzle
             self.table = [[] for i in range(size)]
             for j in range(size):
                 while len(self.table[j])<size:
@@ -92,33 +189,83 @@ class Puzzle:
         else:
             self.table=table
 
-        # print(self.table)
+    
+    """
+    -------------------------------------------------------
+    Compares two puzzle object
+    Use: puzzle1==puzzle2
+    -------------------------------------------------------
+    Preconditions:
+            table - list (2D)
+    Postconditions:
+        Returns True if puzzle data matches, False otherwise
+    -------------------------------------------------------
+    """
 
     def __eq__(self, table1):
+        # function to compare two puzzles
         if self.table == table1:
             return True
         return False
 
+    """
+    -------------------------------------------------------
+    Prints Puzzle object's data table
+    Use: puzzle.printPuzzle()
+    -------------------------------------------------------
+    Postconditions:
+        Prints puzzle data table as list (2D)
+    -------------------------------------------------------
+    """
+
     def printPuzzle(self):
         for i in range(len(self.table)):
             print(self.table[i])
+
+    """
+    -------------------------------------------------------
+    Converts puzzle table to string
+    Use: str = str(puzzle)
+    -------------------------------------------------------
+    Postconditions:
+        converted puzzle string
+    -------------------------------------------------------
+    """
     def __str__(self):
-        # string=""
-        # for i in range(self.size):
-        #     string+=(self.table[i])
+
         return str(self.table)
 
+    """
+    -------------------------------------------------------
+    Calculates heuristic 1 for 8-puzzle
+    Use: puzzle.h1(size)
+    -------------------------------------------------------
+    Preconditions:
+            size - int
+    Postconditions:
+        Returns number of misplaced puzzle pieces
+    -------------------------------------------------------
+    """
 
     def h1(self, size):
         count = 0
 
         for i in range(size):
             for j in range(size):
-                #print("this is self table",self.table)
-                #print("this is goal15",goal15)
-                if self.table[i][j] != goal15[i][j] and self.table[i][j]!=0:
+
+                if self.table[i][j] != goal8[i][j] and self.table[i][j]!=0:
                     count += 1
         return count
+
+    """
+    -------------------------------------------------------
+    Locates blank string in puzzle
+    Use: puzzle.find_blankspot()
+    -------------------------------------------------------
+    Postconditions:
+        Returns index of blank string in puzzle (aka 0)
+    -------------------------------------------------------
+    """
 
     def find_blankspot(self):
         index=[0,0]
@@ -128,6 +275,19 @@ class Puzzle:
                     index[0]=i
                     index[1]=j
         return index
+
+    """
+    -------------------------------------------------------
+    Determines possible moves for the blank space. Either
+    up, down left or right
+    Use: puzzle.possible_moves(index)
+    -------------------------------------------------------
+    Preconditions:
+            index - int
+    Postconditions:
+        Returns list of possible moves for blank space
+    -------------------------------------------------------
+    """
 
     def possible_moves(self,index):
         moves=[]
@@ -150,6 +310,20 @@ class Puzzle:
 
 
         return moves
+
+    """
+    -------------------------------------------------------
+    Performs translations for blank spaces within possible
+    move spaces
+    Use: puzzle.moves(moves, blank_spot)
+    -------------------------------------------------------
+    Preconditions:
+            moves - list
+            blank_spot - list
+    Postconditions:
+        Returns list of moves performed succesfully
+    -------------------------------------------------------
+    """
     def moves(self,moves,blank_spot):
         current_table=deepcopy(self.table)
         blank= blank_spot
@@ -174,61 +348,46 @@ class Puzzle:
         return list_moves
 
 
+"""
+-------------------------------------------------------
+Initializes A_Solver class
+Use: A_Solver(puzzle,list_moves,blank_index)
+-------------------------------------------------------
+Preconditions:
+        Puzzle - object
+        list_moves - list
+        blank_index - int
+Postconditions:
+    Solves 8-puzzle problem and prints confirmation
+    if solved. 
+-------------------------------------------------------
+"""
 
 class A_Solver:
         def __init__(self,root,moves,blank_index):
 
             pq=PriorityQueue()
-            #cq=PriorityQueue()
             node = _PQNode(Puzzle(root,3))
             pq.insert(node)
-            # print("is_empty, ",pq.is_empty())
-            # v=pq.peek()
-            # v.printPuzzle()
+
             visited=[]
-            #visited.append(Puzzle(root,3).table)
-           # print("iterate through")
 
-            # for i in pq:
-            #     print(i._data)
-            #print("removed")
-            # u=pq.remove()
-            # print(u._data)
-
-            #u.printPuzzle()
             count=0
-            # a=pq.is_empty()
-            # print(a)
-            while(pq.is_empty()!=True ):
+            expanded=0
 
+            while(pq.is_empty()!=True ):
+                expanded+=1
                 u=pq.remove()
                 visited.append(u._data)
 
-               
-                # print("this was removed")
-                # print(u._data)
-                # print(" f value")
-                # print(u.f)
-                # print("everthing in the queue currently")
-                # for i in pq:
-                #     print(i._data)
-                # print()
-
-                # print("this is in the visited")
-
-                # for i in visited:
-                #     print(i)
-
-                # print("")
-
-                # print("----------")
-                
-                #u.printPuzzle()
-                
-                # print("F(g) value")
-                #print(u._data.h1(3))
-                if u._data==Puzzle(goal15,3):
-                    print(u._data,"is the goal")
+                if u._data==Puzzle(goal8,3):
+                    goal_node=u
+                    print("Goal puzzle reached")
+                    print()
+                    print('[1, 2, 3]')
+                    print('[4, 5, 6]')
+                    print('[7, 8, 0]')
+                    print()
                     break
 
                 else:
@@ -237,224 +396,70 @@ class A_Solver:
                     blank_index=u._data.find_blankspot()
                     moves=u._data.possible_moves(blank_index)
                     list_moves=u._data.moves(moves,blank_index)
-
-                    #min=Puzzle(list_moves[1],3).table
                 
 
                     for i in (list_moves):
                         node = _PQNode(Puzzle(i,3),None,u)
-                        # lower_f=0
-                        # pq_node=None
-
-                        # for c in pq:
-                        #     if node==c:
-                        #         lower_f= c.f
-                        #         pq_node=c
+ 
                         if node._data in visited:
-                            #print('skiped')
                             continue
                         new=u.g+1
                         if (node not in pq or new<node.g):
-                            # print("hello MADE IT HERE")
                             node.parent=u
-                            # print("node.oldg:", node.g)
                             node.g=new
-                            # print("node.parent:", node.parent._data)
-                            # print("node.newg:", node.g)
-
-                     
-
-                            
-
-
 
                             if node not in pq:
-                                #print("SOMETHING HAS BEEN DELETED")
-                                #pq.remove(pq_node)
-                                # print("inserted")
-                                # print(node._data)
-                                # print("f(g) value")
-                                # print(node.f)
-                                # print("g value")
-                                # print(node.g)
-                                # print("h value")
-                                # print(node.h)
                                 pq.insert(node)
 
-            
-
-
-
                 count+=1
-
-            return
-
-        
-        # class A_Solver:
-        #     def __init__(self,root,moves,blank_index):
-
-        #     pq=PriorityQueue()
-        #     node = _PQNode(Puzzle(root,3))
-        #     pq.insert(node)
-        #     # print("is_empty, ",pq.is_empty())
-        #     # v=pq.peek()
-        #     # v.printPuzzle()
-        #     visited=[]
-        #     visited.append(Puzzle(root,3).table)
-        #     print("iterate through")
-
-        #     for i in pq:
-        #         print(i)
-        #     print("removed")
-        #     # u=pq.remove()
-        #     # print(u._data)
-
-        #     #u.printPuzzle()
-        #     count=0
-        #     a=pq.is_empty()
-        #     print(a)
-        #     while(pq.is_empty()!=True ):
-
-        #         u=pq.remove()
-        #         print("is it empty?")
-        #         a=pq.is_empty()
-        #         print(a)
-        #         print("this was removed")
-        #         print(u._data)
-        #         print("value")
-        #         print(u.g)
-        #         print("everthing in the queue currently")
-        #         for i in pq:
-        #             print(i)
-        #         print()
-
-        #         print("this is in the visited")
-
-        #         for i in visited:
-        #             print(i)
-
-        #         print("")
-
-        #         print("----------")
-                
-        #         #u.printPuzzle()
-                
-        #         print("F(g) value")
-        #         #print(u._data.h1(3))
-        #         if u._data==Puzzle(goal15,3):
-        #             print(u._data,"is the goal")
-        #             break
-        #         else:
-
-        #             blank_index=u._data.find_blankspot()
-        #             moves=u._data.possible_moves(blank_index)
-        #             list_moves=u._data.moves(moves,blank_index)
-
-        #             #min=Puzzle(list_moves[1],3).table
-        #             for i in (list_moves):
-                        
-        #                 if ((Puzzle(i,3)).table not in visited ):
-        #                     node = _PQNode(Puzzle(i,3),None,u)
-                            
-
-
-        #                     print("inserted")
-        #                     print(node._data)
-        #                     print("f(g) value")
-        #                     print(node.f)
-        #                     print("g value")
-        #                     print(node.g)
-        #                     print("h value")
-        #                     print(node.h)
-        #                     pq.insert(node)
-                            
-        #             visited.append(u._data.table)
-
-
-
-        #         count+=1
-
-        #     return
-
-
-
-
+            #find the number of moves
             
+            current=goal_node
+            path=[]
+            move_count=0
+            while(current.parent!=None):
+
+                current=current.parent
+                path.append(current)
+                move_count+=1
+
+            print('# of steps to find solution: ', move_count)
+            print('# of nodes expanded: ', expanded)
+
+            return 
 
 
-
-# class ChildNode:
-
-#     #puzzleq = utilities.PriorityQueue()
-
-#     def __init__(self, parent, size):
-#         self.size = size
-#         self.parent = parent
-#         self.parent_table = parent.table
-        
-
-#     def storePuzzle(self, puzzleq):
-#         puzzleq.insert(self.parent_table)
-
-#     def printPuzzle(self):
-#         for i in range(self.size):
-#             print(self.parent_table[i])
-
-    # def around(self, parent, size):
-    #     possible_moves = []
-    #     blank_index = [0,0]
-
-    #     for i in range(size):
-    #         for j in range(size):
-    #             if self.table[i][j] == ' ':
-    #                 blank_index[0] = i
-    #                 blank_index[1] = j
-    #                 break
-    #     print(blank_index)
-
-    #     return None
+"""
+-------------------------------------------------------
+Initializes main class
+-------------------------------------------------------
+Postconditions:
+    Prints 100 randomly generated 8-puzzles by calling
+    A_Solver to solve them. 
+-------------------------------------------------------
+"""   
             
 def main():
-    #print()
-    #this works[[5,2,8],[4,1,7],[0,3,6]]
-    #this doesnt work (infinite loop)[[1,5,8],[3,2,0],[4,6,7]]
-    #infinite looping [[1,2,5],[4,3,6],[8,7,0]]
-    #this works: [[1,2,3],[4,0,6],[7,5,8]]
-    # this works: [[1,2,3],[0,4,6],[7,5,8]]
-    #this works: [[1,2,5],[4,3,6],[8,7,0]]
-     #this works: [[1,2,3],[0,4,6],[7,5,8]]
-
-    # if( (Puzzle([[5,2,8],[4,1,7],[0,3,6]],3).isSolvable()):
-    #     print("this is solvable")
-
-    puzzle = Puzzle([[7,5,8],[1,4,6],[3,0,2]],3)
-    puzzle.printPuzzle()
     print()
-    '''testing blank spot and possible moves'''
-    blank_index=puzzle.find_blankspot()
-    moves=puzzle.possible_moves(blank_index)
-    print("blank index",blank_index)
-    print("indices of moves",moves)
-    print()
-    print("list of moves")
-    list_moves=puzzle.moves(moves,blank_index)
-    for i in list_moves:
-        print(i)
-        print()
-    
-    print()
-    puzzle.printPuzzle()
-    print()
-    '''testing A solver'''
-    A_Solver(puzzle,list_moves,blank_index)
+    print('TESTING FOR 8-PUZZLE')
+    print('====================================================================================')
+    counter=0
+    while(counter<100):
+        puzzle=Puzzle(None,3)
 
-
-    # print(puzzle.h1(3, goal15))
-    #child = ChildNode(puzzle, 3)
-    #child.printPuzzle()
-    # print(child.around(puzzle, 3))
-    #print("Manhattan Distance:", puzzle.manhattan())
-    #print("Manhattan Distance:", puzzle.manhattan())
+        if (puzzle.isSolvable()):
+            print('-----------------------------------------------------------------------------------')
+            print('Generating puzzle #' + str(counter+1) + ' : ')
+            print()
+            puzzle.printPuzzle()
+            print()
+            blank_index=puzzle.find_blankspot()
+            moves=puzzle.possible_moves(blank_index)
+            list_moves=puzzle.moves(moves,blank_index)
+            A_Solver(puzzle,list_moves,blank_index)
+            print()
+            counter+=1
+            print('-----------------------------------------------------------------------------------')
 
 
 

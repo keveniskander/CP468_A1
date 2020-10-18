@@ -8,11 +8,13 @@ ID: 170804730
 Email: cast4730@mylaurier.ca
 _updated_= "2018-03-05"
 implementation taken from cp164 by david brown
+edited for this project
 ---------------------------------------
 """
 
 import copy
 from copy import deepcopy
+import itertools
 
 class _PQNode:
 
@@ -35,6 +37,7 @@ class _PQNode:
 
         self.parent = parent
         self._next = _next
+        self._id = id(list(itertools.chain(*self._data)))
 
         self.g=0
         self.f=0
