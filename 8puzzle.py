@@ -15,7 +15,7 @@ import math
 import random
 from copy import deepcopy
 from utilities import _PQNode, PriorityQueue
-from random import *
+from random import shuffle
 
 # Global variables representing goal for 8-puzzle and mapping of indexes for the goal state
 goal8 = [[1, 2, 3],[4, 5, 6],[7, 8, 0]]
@@ -381,70 +381,64 @@ Postconditions:
 -------------------------------------------------------
 """
 
-class A_Solver:
-        def __init__(self,root,moves,blank_index, heuristic):
 
-            pq=PriorityQueue()
-            node = _PQNode(Puzzle(root,3),None,None, heuristic)
-            pq.insert(node)
+def solve(root, heuristic):
 
-            visited=[]
+    pq=PriorityQueue()
+    node = _PQNode(Puzzle(root,3),None,None, heuristic)
+    pq.insert(node)
 
-            count=0
-            expanded=0
+    visited=[]
 
-            while(pq.is_empty()!=True ):
-                expanded+=1
-                u=pq.remove()
-                visited.append(u._data)
+    count=0
+    expanded=0
 
-                if u._data==Puzzle(goal8,3):
-                    goal_node=u
-                    print("Goal puzzle reached")
-                    print()
-                    print('[1, 2, 3]')
-                    print('[4, 5, 6]')
-                    print('[7, 8, 0]')
-                    print()
-                    break
+    while(pq.is_empty()!=True ):
+        expanded+=1
+        u=pq.remove()
+        visited.append(u._data)
 
-                else:
+        if u._data==Puzzle(goal8,3):
+            goal_node=u
+            break
+
+        else:
 
 
-                    blank_index=u._data.find_blankspot()
-                    moves=u._data.possible_moves(blank_index)
-                    list_moves=u._data.moves(moves,blank_index)
-                
+            blank_index=u._data.find_blankspot()
+            moves=u._data.possible_moves(blank_index)
+            list_moves=u._data.moves(moves,blank_index)
+        
 
-                    for i in (list_moves):
-                        node = _PQNode(Puzzle(i,3),None,u,heuristic)
- 
-                        if node._data in visited:
-                            continue
-                        new=u.g+1
-                        if (node not in pq or new<node.g):
-                            node.parent=u
-                            node.g=new
+            for i in (list_moves):
+                node = _PQNode(Puzzle(i,3),None,u,heuristic)
 
-                            if node not in pq:
-                                pq.insert(node)
+                if node._data in visited:
+                    continue
+                new=u.g+1
+                if (node not in pq or new<node.g):
+                    node.parent=u
+                    node.g=new
 
-                count+=1
-            #find the number of moves
-            
-            current=goal_node
-            path=[]
-            move_count=0
-            while(current.parent!=None):
+                    if node not in pq:
+                        pq.insert(node)
 
-                current=current.parent
-                path.append(current)
-                move_count+=1
+        count+=1
+    #find the number of moves
+    
+    current=goal_node
+    path=[]
+    move_count=0
+    while(current.parent!=None):
 
-            print('# of steps to find solution: ', move_count)
-            print('# of nodes expanded: ', expanded)
+        current=current.parent
+        path.append(current)
+        move_count+=1
 
-            return 
+    print('# of steps to find solution: ', move_count)
+    print('# of nodes expanded: ', expanded)
+
+    return move_count, expanded
 
 
 """
@@ -471,18 +465,26 @@ def gen1():
             x += 1
 
         puzzle = Puzzle(p, 3)
-        if puzzle not in puzzle_list and puzzle.manhattan() < 6:
+        if puzzle not in puzzle_list and puzzle.manhattan() < 11 and puzzle.h1() < 5 and puzzle.isSolvable():
             puzzle_list.append(puzzle)
             
     return puzzle_list
             
 def main():
+
+    q = gen1()
+    # for x in q:
+    #     print(x.table)
+
+    steps = []
+    nodes = []
+
     print()
     print('TESTING FOR 8-PUZZLE')
     print('====================================================================================')
     counter=0
     while(counter<100):
-        puzzle=Puzzle(None,3)
+        puzzle=q[counter]
 
         if (puzzle.isSolvable()):
             print('-----------------------------------------------------------------------------------')
@@ -490,13 +492,22 @@ def main():
             print()
             puzzle.printPuzzle()
             print()
-            blank_index=puzzle.find_blankspot()
-            moves=puzzle.possible_moves(blank_index)
-            list_moves=puzzle.moves(moves,blank_index)
-            A_Solver(puzzle,list_moves,blank_index,1)
+            
+            s, n = solve(puzzle, 3)
+            
+            steps.append(s)
+            nodes.append(n)
             print()
             counter+=1
             print('-----------------------------------------------------------------------------------')
+
+    anodes = sum(nodes) / len(nodes)
+    asteps = sum(steps) / len(steps)
+    
+    print()
+    print("-~SUMMARY~-")
+    print("Steps Average:           ", asteps)
+    print("Nodes Expanded Average:  ", anodes)
 
 
 
