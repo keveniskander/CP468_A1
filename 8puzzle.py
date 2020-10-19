@@ -484,9 +484,9 @@ def main():
     nodes3 = []
 
     print('TESTING FOR 8-PUZZLE')
-    print('='*120)
-    print("|{:10}|{:35}|{:^10}|{:^10}|{:^10}|{:^10}|{:^10}|{:^10}|".format("Puzzle", "", "h1s", "h1n", "h2s", "h2n", "h3s", "h3n"))
-    print('-'*120)
+    print('='*90)
+    print("|{:10}|{:35}|{:^6}|{:^6}|{:^6}|{:^6}|{:^6}|{:^6}|".format("Puzzle", "", "h1s", "h1n", "h2s", "h2n", "h3s", "h3n"))
+    print('-'*90)
     counter=0
     while(counter<100):
         puzzle=q[counter]
@@ -504,11 +504,11 @@ def main():
             steps3.append(s3)
             nodes3.append(n3)
 
-            print("|P{:<9}| {} |{:>10}|{:>10}|{:>10}|{:>10}|{:>10}|{:>10}|".format(counter+1, puzzle.table, s, n, s2, n2, s3, n3))
+            print("|P{:<9}| {} |{:>6}|{:>6}|{:>6}|{:>6}|{:>6}|{:>6}|".format(counter+1, puzzle.table, s, n, s2, n2, s3, n3))
             
             counter+=1
 
-            print('-'*120)
+            print('-'*90)
 
     anodes = sum(nodes) / len(nodes)
     asteps = sum(steps) / len(steps)
