@@ -15,6 +15,7 @@ import math
 import random
 from copy import deepcopy
 from utilities import _PQNode, PriorityQueue
+from random import *
 
 # Global variables representing goal for 8-puzzle and mapping of indexes for the goal state
 goal8 = [[1, 2, 3],[4, 5, 6],[7, 8, 0]]
@@ -247,11 +248,11 @@ class Puzzle:
     -------------------------------------------------------
     """
 
-    def h1(self, size):
+    def h1(self):
         count = 0
 
-        for i in range(size):
-            for j in range(size):
+        for i in range(self.size):
+            for j in range(self.size):
 
                 if self.table[i][j] != goal8[i][j] and self.table[i][j]!=0:
                     count += 1
@@ -324,6 +325,7 @@ class Puzzle:
         Returns list of moves performed succesfully
     -------------------------------------------------------
     """
+
     def moves(self,moves,blank_spot):
         current_table=deepcopy(self.table)
         blank= blank_spot
@@ -347,6 +349,21 @@ class Puzzle:
 
         return list_moves
 
+    """
+    -------------------------------------------------------
+    Calculates heuristic 3 for 8-puzzle
+    Use: Puzzlenode.h3()
+    -------------------------------------------------------
+    Postconditions:
+        Returns total_distance traveled by nodes
+    -------------------------------------------------------
+    """
+
+    def h3(self):
+
+        return (self.h1()+self.manhattan())
+
+
 
 """
 -------------------------------------------------------
@@ -357,6 +374,7 @@ Preconditions:
         Puzzle - object
         list_moves - list
         blank_index - int
+        heuristic - int
 Postconditions:
     Solves 8-puzzle problem and prints confirmation
     if solved. 
@@ -364,10 +382,10 @@ Postconditions:
 """
 
 class A_Solver:
-        def __init__(self,root,moves,blank_index):
+        def __init__(self,root,moves,blank_index, heuristic):
 
             pq=PriorityQueue()
-            node = _PQNode(Puzzle(root,3))
+            node = _PQNode(Puzzle(root,3),None,None, heuristic)
             pq.insert(node)
 
             visited=[]
@@ -399,7 +417,7 @@ class A_Solver:
                 
 
                     for i in (list_moves):
-                        node = _PQNode(Puzzle(i,3),None,u)
+                        node = _PQNode(Puzzle(i,3),None,u,heuristic)
  
                         if node._data in visited:
                             continue
@@ -438,6 +456,25 @@ Postconditions:
     A_Solver to solve them. 
 -------------------------------------------------------
 """   
+
+def gen1():
+    puzzle_list = []
+
+    while len(puzzle_list) < 100:
+        n = [1,2,3,4,5,6,7,8,0]
+        shuffle(n)
+        p = [[], [], []]
+
+        x = 0
+        while len(n) != 0:
+            p[(x+1) % 3].append(n.pop())
+            x += 1
+
+        puzzle = Puzzle(p, 3)
+        if puzzle not in puzzle_list and puzzle.manhattan() < 6:
+            puzzle_list.append(puzzle)
+            
+    return puzzle_list
             
 def main():
     print()
@@ -456,7 +493,7 @@ def main():
             blank_index=puzzle.find_blankspot()
             moves=puzzle.possible_moves(blank_index)
             list_moves=puzzle.moves(moves,blank_index)
-            A_Solver(puzzle,list_moves,blank_index)
+            A_Solver(puzzle,list_moves,blank_index,1)
             print()
             counter+=1
             print('-----------------------------------------------------------------------------------')

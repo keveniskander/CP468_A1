@@ -18,7 +18,7 @@ import itertools
 
 class _PQNode:
 
-    def __init__(self,table,  _next=None,parent=None):
+    def __init__(self,table,  _next=None,parent=None, heuristic = 1):
         """
         -------------------------------------------------------
         Initializes a priority queue node.
@@ -41,7 +41,12 @@ class _PQNode:
 
         self.g=0
         self.f=0
-        self.h=table.manhattan()
+        if heuristic == 1:
+            self.h=table.h1()
+        elif heuristic == 2:
+            self.h=table.manhattan()
+        else:
+            self.h=table.h3()
 
         if self.parent!=None:
             self.g=self.parent.g +1
