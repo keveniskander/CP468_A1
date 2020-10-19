@@ -367,14 +367,12 @@ class Puzzle:
 
 """
 -------------------------------------------------------
-Initializes A_Solver class
-Use: A_Solver(puzzle,list_moves,blank_index)
+Solver function to find viable solution
+Use: solve(root, heuristic)
 -------------------------------------------------------
 Preconditions:
-        Puzzle - object
-        list_moves - list
-        blank_index - int
-        heuristic - int
+        root - Puzzle
+        heuristic - int {1, 2, 3}
 Postconditions:
     Solves 8-puzzle problem and prints confirmation
     if solved. 
