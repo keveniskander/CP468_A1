@@ -319,7 +319,7 @@ Postconditions:
 def gen1():
     puzzle_list = []
 
-    while len(puzzle_list) < 100:
+    while len(puzzle_list) < 10:
         n = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0]
         shuffle(n)
         p = [[], [], [], []]
@@ -330,7 +330,8 @@ def gen1():
             x += 1
 
         puzzle = Puzzle(p, 4)
-        if puzzle not in puzzle_list and puzzle.manhattan() < 23 and puzzle.isSolvable():
+        if puzzle not in puzzle_list and puzzle.h3() < 25 and puzzle.isSolvable():
+            print('FOUND')
             puzzle_list.append(puzzle)
             
     return puzzle_list
@@ -358,10 +359,10 @@ def main():
     q = gen1()
     print('puzzles generated..')
 
-    for x in q:
-        s, n = solve(x, 3)
-        print("steps:   {}      nodes:  {}".format(s, n))
-        print("-----")
+    # for x in q:
+    #     s, n = solve(x, 3)
+    #     print("steps:   {}      nodes:  {}".format(s, n))
+    #     print("-----")
 
 
 
@@ -374,55 +375,57 @@ def main():
     # for x in q:
     #     print(x.table)
 
-    # steps = []
-    # nodes = []
-    # steps2 = []
-    # nodes2 = []
-    # steps3 = []
-    # nodes3 = []
+    steps = []
+    nodes = []
+    steps2 = []
+    nodes2 = []
+    steps3 = []
+    nodes3 = []
 
-    # print('TESTING FOR 15-PUZZLE')
-    # print('='*90)
-    # print("|{:10}|{:35}|{:^6}|{:^6}|{:^6}|{:^6}|{:^6}|{:^6}|".format("Puzzle", "", "h1s", "h1n", "h2s", "h2n", "h3s", "h3n"))
-    # print('-'*90)
-    # counter=0
-    # while(counter<100):
-    #     puzzle=q[counter]
+    print('TESTING FOR 15-PUZZLE')
+    print('='*105)
+    print("|{:10}|{:64}|{:^6}|{:^6}|{:^6}|{:^6}|{:^6}|{:^6}|".format("Puzzle", "", "h1s", "h1n", "h2s", "h2n", "h3s", "h3n"))
+    print('-'*105)
+    counter=0
+    while(counter<100):
+        puzzle=q[counter]
 
-    #     if (puzzle.isSolvable()):
+        if (puzzle.isSolvable()):
 
-    #         s, n = solve(puzzle, 1)
-    #         s2, n2 = solve(puzzle, 2)
-    #         s3, n3 = solve(puzzle, 3)
+            s = 0
+            n = 0
+            s2 = 0
+            n2 = 0
+            s3, n3 = solve(puzzle, 3)
 
-    #         steps.append(s)
-    #         nodes.append(n)
-    #         steps2.append(s2)
-    #         nodes2.append(n2)
-    #         steps3.append(s3)
-    #         nodes3.append(n3)
+            steps.append(s)
+            nodes.append(n)
+            steps2.append(s2)
+            nodes2.append(n2)
+            steps3.append(s3)
+            nodes3.append(n3)
 
-    #         print("|P{:<9}| {} |{:>6}|{:>6}|{:>6}|{:>6}|{:>6}|{:>6}|".format(counter+1, puzzle.table, s, n, s2, n2, s3, n3))
+            print("|P{:<9}| {} |{:>6}|{:>6}|{:>6}|{:>6}|{:>6}|{:>6}|".format(counter+1, puzzle.table, s, n, s2, n2, s3, n3))
             
-    #         counter+=1
+            counter+=1
 
-    #         print('-'*90)
+            print('-'*105)
 
-    # anodes = sum(nodes) / len(nodes)
-    # asteps = sum(steps) / len(steps)
-    # anodes2 = sum(nodes2) / len(nodes2)
-    # asteps2 = sum(steps2) / len(steps2)
-    # anodes3 = sum(nodes3) / len(nodes3)
-    # asteps3 = sum(steps3) / len(steps3)
+    anodes = sum(nodes) / len(nodes)
+    asteps = sum(steps) / len(steps)
+    anodes2 = sum(nodes2) / len(nodes2)
+    asteps2 = sum(steps2) / len(steps2)
+    anodes3 = sum(nodes3) / len(nodes3)
+    asteps3 = sum(steps3) / len(steps3)
     
-    # print()
-    # print("-~ SUMMARY OF AVERAGES ~-")
-    # print("h1 steps:  ", asteps)
-    # print("h1 nodes:  ", anodes)
-    # print("h2 steps:  ", asteps2)
-    # print("h2 nodes:  ", anodes2)
-    # print("h3 steps:  ", asteps3)
-    # print("h3 nodes:  ", anodes3)
+    print()
+    print("-~ SUMMARY OF AVERAGES ~-")
+    print("h1 steps:  ", asteps)
+    print("h1 nodes:  ", anodes)
+    print("h2 steps:  ", asteps2)
+    print("h2 nodes:  ", anodes2)
+    print("h3 steps:  ", asteps3)
+    print("h3 nodes:  ", anodes3)
 
 
 if __name__ == "__main__":

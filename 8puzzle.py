@@ -463,7 +463,7 @@ def gen1():
             x += 1
 
         puzzle = Puzzle(p, 3)
-        if puzzle not in puzzle_list and puzzle.manhattan() < 11 and puzzle.h1() < 5 and puzzle.isSolvable():
+        if puzzle not in puzzle_list and puzzle.isSolvable():
             puzzle_list.append(puzzle)
             
     return puzzle_list
