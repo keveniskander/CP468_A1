@@ -7,7 +7,7 @@ Author: Carla Castaneda
 ID: 170804730
 Email: cast4730@mylaurier.ca
 _updated_= "2018-03-05"
-implementation taken from cp164 by david brown
+PQ and SortedList implementation taken from cp164 by david brown
 edited for this project
 ---------------------------------------
 """
@@ -15,6 +15,110 @@ edited for this project
 import copy
 from copy import deepcopy
 import itertools
+
+class SortedList:
+
+    def __init__(self, a):
+        """
+        -------------------------------------------------------
+        Initializes an empty SortedList.
+        Use: sl = SortedList()
+        -------------------------------------------------------
+        Postconditions:
+            Initializes an empty sorted list.
+        -------------------------------------------------------
+        """
+        if a == None:
+            self._values = []
+        else:
+            self._values = a
+
+        return
+
+    def __len__(self):
+        """
+        -------------------------------------------------------
+        Returns the size of the sorted list.
+        Use: n = len(sl)
+        -------------------------------------------------------
+        Postconditions:
+            Returns the number of values in the sorted list.
+        -------------------------------------------------------
+        """
+        return len(self._values)
+
+    def insert(self, value):
+        """
+        -------------------------------------------------------
+        Inserts value at the proper place in the sorted list.
+        Must be a stable insertion, i.e. consecutive insertions
+        of the same value must keep their order preserved.
+        Use: sl.insert(value)
+        -------------------------------------------------------
+        Preconditions:
+            value - a data element (?)
+        Postconditions:
+            value inserted at its sorted position within the sorted list.
+        -------------------------------------------------------
+        """
+        # Index of beginning of subarray to search.
+        low = 0
+        # Index of end of subarray to search.
+        high = len(self._values) - 1
+
+        while low <= high:
+            # Find the middle of the current subarray.
+            # (avoids overflow on large values vs (low + high)//2
+            mid = (high - low) // 2 + low
+
+            if self._values[mid] > value:
+                # search the left subarray.
+                high = mid - 1
+            else:
+                # Default: search the right subarray.
+                low = mid + 1
+        self._values.insert(low, value)
+        return
+
+    def _binary_search(self, key):
+        """
+        -------------------------------------------------------
+        Searches for the first occurrence of key in the sorted list. 
+        Performs a stable search.
+        Private helper method - used only by other ADT methods.
+        Use: i = self._binary_search(key)
+        -------------------------------------------------------
+        Preconditions:
+            key - a data element (?)
+        Postconditions:
+            returns
+            i - the index of the first occurrence of key in
+                the list, -1 if key is not found. (int)
+        -------------------------------------------------------
+        """
+        # Index of beginning of subarray to search.
+        low = 0
+        # Index of end of subarray to search.
+        high = len(self._values) - 1
+
+        while low < high:
+            # Find the middle of the current subarray.
+            # (avoids overflow on large values vs (low + high)//2
+            mid = (high - low) // 2 + low
+
+            if self._values[mid] < key:
+                # Search the right subarray.
+                low = mid + 1
+            else:
+                # Default: search the left subarray.
+                high = mid
+
+        # Deferred test for equality.
+        if low == high and self._values[low] == key:
+            i = low
+        else:
+            i = -1
+        return i
 
 class _PQNode:
 
@@ -37,7 +141,7 @@ class _PQNode:
 
         self.parent = parent
         self._next = _next
-        self._id = id(list(itertools.chain(*self._data)))
+        self._id = hash(str(self._data))
 
         self.g=0
         self.f=0
