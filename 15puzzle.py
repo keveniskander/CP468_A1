@@ -330,7 +330,7 @@ def gen1():
             x += 1
 
         puzzle = Puzzle(p, 4)
-        if puzzle not in puzzle_list and puzzle.manhattan() < 24 and puzzle.isSolvable():
+        if puzzle not in puzzle_list and puzzle.manhattan() < 23 and puzzle.isSolvable():
             puzzle_list.append(puzzle)
             
     return puzzle_list
@@ -356,6 +356,7 @@ def main():
     # print(q._id)
 
     q = gen1()
+    print('puzzles generated..')
 
     for x in q:
         s, n = solve(x, 3)
